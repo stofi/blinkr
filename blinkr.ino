@@ -51,7 +51,7 @@ void buttonRead(Button &button) {
 void lightBlink(Light &light) {
   if (!light.state) {
     light.blink_state = false;
-    return light;
+    return;
   }
   
   const long time = millis();
@@ -60,6 +60,15 @@ void lightBlink(Light &light) {
   if (time_passed) {
     light.blink_state = !light.blink_state;
     light.last_blink = time;
+  }
+}
+
+void buttonsCompare(Button &a, Button &b) {
+  if(b.light.state && b.light.time > a.light.time) {
+    a.light.state = false;
+  }
+  if(a.light.state && a.light.time > b.light.time) {
+    b.light.state = false;
   }
 }
 
@@ -84,12 +93,7 @@ void loop() {
   lightBlink(button_left.light);
   lightBlink(button_right.light);
 
-  if(button_left.light.state && button_left.light.time > button_right.light.time) {
-    button_right.light.state = false;
-  }
-  if(button_right.light.state && button_right.light.time > button_left.light.time) {
-    button_left.light.state = false;
-  }
+  buttonsCompare(button_left, button_right);
 
   digitalWrite(button_left.light.pin, button_left.light.blink_state);
   digitalWrite(button_right.light.pin, button_right.light.blink_state);
