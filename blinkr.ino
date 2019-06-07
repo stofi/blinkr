@@ -34,7 +34,7 @@ Button getButton(int in, int out) {
   return button;
 }
 
-Button buttonRead(Button button) {
+void buttonRead(Button &button) {
   const long time = millis();
   const bool time_passed = time - button.light.time > DEBOUNCE;
 
@@ -46,11 +46,9 @@ Button buttonRead(Button button) {
   }
 
   button.previous = button.reading;
-
-  return button;
 }
 
-Light lightBlink(Light light) {
+void lightBlink(Light &light) {
   if (!light.state) {
     light.blink_state = false;
     return light;
@@ -63,11 +61,9 @@ Light lightBlink(Light light) {
     light.blink_state = !light.blink_state;
     light.last_blink = time;
   }
-  
-  return light;
 }
 
-void buttonSetup(Button button) {
+void buttonSetup(Button &button) {
   pinMode(button.pin, INPUT);
   pinMode(button.light.pin, OUTPUT);  
 }
@@ -82,11 +78,11 @@ void setup() {
 }
 
 void loop() {
-  button_left = buttonRead(button_left);
-  button_right = buttonRead(button_right);
+  buttonRead(button_left);
+  buttonRead(button_right);
 
-  button_left.light = lightBlink(button_left.light);
-  button_right.light = lightBlink(button_right.light);
+  lightBlink(button_left.light);
+  lightBlink(button_right.light);
 
   if(button_left.light.state && button_left.light.time > button_right.light.time) {
     button_right.light.state = false;
