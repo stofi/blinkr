@@ -1,14 +1,16 @@
 #include "functions.h"
 
-Button button_left = getButton(8,3); 
-Button button_right = getButton(7,2); 
+Button button_left = getButton(10, 2);
+Button button_right = getButton(9, 3);
 
-void setup() {
+void setup()
+{
   buttonSetup(button_left);
   buttonSetup(button_right);
 }
 
-void loop() {
+void loop()
+{
   buttonRead(button_left);
   buttonRead(button_right);
 
@@ -20,4 +22,3 @@ void loop() {
   digitalWrite(button_left.light.pin, button_left.light.blink_state);
   digitalWrite(button_right.light.pin, button_right.light.blink_state);
 }
-  
